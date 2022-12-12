@@ -6,9 +6,10 @@ import gameCharacteristics
 from field import Field
 from Snake import Snake
 from apple import Apple
+from gameLevel import GameLevel
 
 
-class Game(Apple, Snake):
+class Game(Apple, Snake, GameLevel):
     def __init__(self):
         self.icon = pygame.image.load("icon.png")
 
@@ -31,6 +32,7 @@ class Game(Apple, Snake):
 
         self.snakeDirectionLast = self.snake.snakeDirection
 
+
     def setGameSettings(self):
         self.mainWindow.fill(gameCharacteristics.windowColor)
 
@@ -39,21 +41,8 @@ class Game(Apple, Snake):
         for i in range(gameCharacteristics.cellCountX):
             for j in range(gameCharacteristics.cellCountY):
                 self.gameField.field[j][i] = self.gameField.cellTypeNone
-        match gameCharacteristics.gameLevel:
-            case 1:
-                for i in range(7):
-                    self.gameField.field[0][i] = self.gameField.cellTypeWall
-                    self.gameField.field[gameCharacteristics.cellCountY - 1][i] = self.gameField.cellTypeWall
-                    self.gameField.field[0][gameCharacteristics.cellCountX - 1 - i] = self.gameField.cellTypeWall
-                    self.gameField.field[gameCharacteristics.cellCountY - 1][gameCharacteristics.cellCountX - 1 - i] = \
-                        self.gameField.cellTypeWall
 
-                for j in range(1, 6):
-                    self.gameField.field[j][0] = self.gameField.cellTypeWall
-                    self.gameField.field[j][gameCharacteristics.cellCountX - 1] = self.gameField.cellTypeWall
-                    self.gameField.field[gameCharacteristics.cellCountY - 1 - j][0] = self.gameField.cellTypeWall
-                    self.gameField.field[gameCharacteristics.cellCountY - 1 - j][gameCharacteristics.cellCountX - 1] = \
-                        self.gameField.cellTypeWall
+        self.setGameLevel()
 
         for i in range(self.snake.snakeLength):
             self.gameField.field[self.snake.snakePositionY][self.snake.snakePositionX - i] = self.snake.snakeLength - i
@@ -92,43 +81,24 @@ class Game(Apple, Snake):
             case self.snake.directionDown:
                 self.snake.snakePositionY += 1
                 self.rotatedHead = pygame.transform.rotate(self.snake.snakeHeadImage, 180)
-                for j in range(gameCharacteristics.cellCountY):
-                    for i in range(gameCharacteristics.cellCountX):
-                        if (self.gameField.field[j][i] > self.gameField.cellTypeNone):
-                                self.gameField.field[j][i] -= 1
-
                 if (self.snake.snakePositionY > gameCharacteristics.cellCountY - 1):
                     self.snake.snakePositionY = 0
 
             case self.snake.directionUp:
                 self.snake.snakePositionY -= 1
                 self.rotatedHead = pygame.transform.rotate(self.snake.snakeHeadImage, 0)
-                for j in range(gameCharacteristics.cellCountY):
-                    for i in range(gameCharacteristics.cellCountX):
-                        if(self.gameField.field[j][i] > self.gameField.cellTypeNone):
-                            self.gameField.field[j][i] -= 1
-
                 if (self.snake.snakePositionY < 0):
                     self.snake.snakePositionY = gameCharacteristics.cellCountY - 1
 
             case self.snake.directionLeft:
                 self.snake.snakePositionX -= 1
                 self.rotatedHead = pygame.transform.rotate(self.snake.snakeHeadImage, -270)
-                for j in range(gameCharacteristics.cellCountY):
-                    for i in range(gameCharacteristics.cellCountX):
-                        if (self.gameField.field[j][i] > self.gameField.cellTypeNone):
-                            self.gameField.field[j][i] -= 1
-
                 if (self.snake.snakePositionX < 0):
                     self.snake.snakePositionX = gameCharacteristics.cellCountX - 1
 
             case self.snake.directionRight:
                 self.rotatedHead = pygame.transform.rotate(self.snake.snakeHeadImage, -90)
                 self.snake.snakePositionX += 1
-                for j in range(gameCharacteristics.cellCountY):
-                    for i in range(gameCharacteristics.cellCountX):
-                        if (self.gameField.field[j][i] > self.gameField.cellTypeNone):
-                            self.gameField.field[j][i] -= 1
                 if (self.snake.snakePositionX > gameCharacteristics.cellCountX - 1):
                     self.snake.snakePositionX = 0
 
@@ -148,6 +118,11 @@ class Game(Apple, Snake):
                     self.gameOverSound.play()
                     time.sleep(1)
                     gameCharacteristics.gameOver = True
+
+        for j in range(gameCharacteristics.cellCountY):
+            for i in range(gameCharacteristics.cellCountX):
+                if (self.gameField.field[j][i] > self.gameField.cellTypeNone):
+                    self.gameField.field[j][i] -= 1
         self.gameField.field[self.snake.snakePositionY][self.snake.snakePositionX] = self.snake.snakeLength
 
     def gameControl(self, event):
@@ -192,14 +167,12 @@ class Game(Apple, Snake):
             if self.snake.snakeDirectionQueue:
                 self.snake.snakeDirection = self.snake.snakeDirectionQueue[len(self.snake.snakeDirectionQueue) - 1]
                 self.snake.snakeDirectionQueue.pop()
+
             if not gameCharacteristics.gamePaused:
                 self.makeMove()
             else:
                 from menu import openPauseMenu
                 openPauseMenu()
-
-            self.mainWindow.fill(tuple(gameCharacteristics.windowColor))
-
 
             if gameCharacteristics.gameOver:
                 gameCharacteristics.newGame = False
@@ -215,6 +188,7 @@ class Game(Apple, Snake):
                 pygame.quit()
                 break
 
+            self.mainWindow.fill(tuple(gameCharacteristics.windowColor))
             self.drawGame(self.mainWindow)
 
             pygame.display.flip()

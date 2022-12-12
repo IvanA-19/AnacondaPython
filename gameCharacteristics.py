@@ -18,7 +18,10 @@ windowHeigth = cellCountY * cellSize
 
 windowColor = [152, 251, 152]
 
-gameLevel = 1
+gameLevel = 4
+
+graphics = ['low', 'high']
+gameGraphics = graphics[1]
 
 gameStarted = False
 gamePaused = False
@@ -32,3 +35,5 @@ gameRestarted = False
 score = 0
 
 gameOver = False
+
+openedSettingsMenu = False

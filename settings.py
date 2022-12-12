@@ -59,7 +59,7 @@ class Ui_GameSettings(object):
     def retranslateUi(self, GameSettings):
         _translate = QtCore.QCoreApplication.translate
         GameSettings.setWindowTitle(_translate("GameSettings", "MainWindow"))
-        self.label.setText(_translate("GameSettings", "<html><head/><body><p align=\"center\"><span style=\" font-size:36pt; font-weight:600; color:#ffff00;\">Game settings</span></p></body></html>"))
+        self.label.setText(_translate("GameSettings", "<html><head/><body><p align=\"center\"><span style=\" font-size:48pt; font-weight:600; color:#ffff00;\">Game settings</span></p></body></html>"))
         self.pushButton.setText(_translate("GameSettings", "PushButton"))
         self.pushButton_2.setText(_translate("GameSettings", "PushButton"))
         self.pushButton_3.setText(_translate("GameSettings", "PushButton"))
