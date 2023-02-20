@@ -18,7 +18,7 @@ windowHeigth = cellCountY * cellSize
 
 windowColor = [152, 251, 152]
 
-gameLevel = 4
+gameLevel = 7
 
 graphics = ['low', 'high']
 gameGraphics = graphics[1]

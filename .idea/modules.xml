@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Tkinter_and_matplotlib.iml" filepath="$PROJECT_DIR$/.idea/Tkinter_and_matplotlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/AnacondaPython.iml" filepath="$PROJECT_DIR$/.idea/AnacondaPython.iml" />
     </modules>
   </component>
 </project>
